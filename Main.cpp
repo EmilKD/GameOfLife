@@ -18,9 +18,8 @@ float g_xpos, g_ypos;
 float wc_x;
 float wc_y;
 
-float global_scale = 2.0f;
-float Scale_x = float(1.0f / windowSize[0]) * global_scale;
-float Scale_y = float(1.0f / windowSize[1]) * global_scale;
+float Scale_x;
+float Scale_y;
 
 double previousTime{ 0.0 };
 double DeltaT{ 0.0 };
@@ -157,7 +156,26 @@ int main()
 	// Program Loop ---------------------------------------------------------------------------------------------------
 	//=================================================================================================================
 	
-	Grid grid;
+	Grid grid(20, 10, windowSize[0],windowSize[1]);
+	cout << grid.getCells()[0].size();
+	cout << grid.getCells().size();
+	cout << endl;
+
+	for(vector<cell> vc: grid.getCells())
+	{
+		for (cell c : vc)
+		{
+			cout << c.state << " ";
+		}
+		cout << endl;
+	}
+
+	cout << endl;
+	cout << grid.getCells()[0][0].pos[0] << " " << grid.getCells()[0][0].pos[1] << endl;
+
+	float global_scale = 2.0f;
+	float Scale_x = float(1.0f / windowSize[0]) * global_scale;
+	float Scale_y = float(1.0f / windowSize[1]) * global_scale;
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -179,9 +197,17 @@ int main()
 			previousTime = runtime;
 
 			// Render
-			rectangle.getShader().use();	
-			rectangle.transform(glm::vec3(Scale_x, Scale_y, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-			rectangle.DrawShape(color.Amber);
+			rectangle.getShader().use();
+			for(vector<cell> vc: grid.getCells())
+			{
+				for(cell c: vc)
+				{
+					rectangle.transform(glm::vec3(0.1f, 0.1f, 1.0f), c.pos*1.0f);
+					rectangle.DrawShape(color.Amber);
+				}
+				cout << endl;
+			}
+			
 
 		}
 
