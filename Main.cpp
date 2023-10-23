@@ -13,7 +13,7 @@ using std::cout, std::endl, std::vector, std::array;
 bool left_mouse_button;
 bool right_mouse_button;
 
-array<int, 2> windowSize{1000, 1000};
+array<int, 2> windowSize{1000, 600};
 float g_xpos, g_ypos;
 float wc_x;
 float wc_y;
@@ -155,12 +155,15 @@ int main()
 	//=================================================================================================================
 	// Program Loop ---------------------------------------------------------------------------------------------------
 	//=================================================================================================================
+	int cols = 100;
+	int rows = 60;
 	
-	Grid grid(20, 10, windowSize[0],windowSize[1]);
+	Grid grid(cols, rows, windowSize[0],windowSize[1]);
 	cout << grid.getCells()[0].size();
 	cout << grid.getCells().size();
 	cout << endl;
 
+	// Visualizing the Grid
 	for(vector<cell> vc: grid.getCells())
 	{
 		for (cell c : vc)
@@ -170,10 +173,11 @@ int main()
 		cout << endl;
 	}
 
+	
 	cout << endl;
 	cout << grid.getCells()[0][0].pos[0] << " " << grid.getCells()[0][0].pos[1] << endl;
 
-	float global_scale = 2.0f;
+	float global_scale = 5.0f;
 	float Scale_x = float(1.0f / windowSize[0]) * global_scale;
 	float Scale_y = float(1.0f / windowSize[1]) * global_scale;
 
@@ -200,15 +204,23 @@ int main()
 			rectangle.getShader().use();
 			for(vector<cell> vc: grid.getCells())
 			{
-				for(cell c: vc)
+				for (cell c : vc)
 				{
-					rectangle.transform(glm::vec3(0.1f, 0.1f, 1.0f), c.pos*1.0f);
-					rectangle.DrawShape(color.Amber);
-				}
-				cout << endl;
-			}
-			
+					grid.checkNeighbors(&c);
+					grid.step += 1;
 
+					if (c.state)
+					{
+						rectangle.transform(glm::vec3(Scale_x, Scale_y, 0.0f), c.pos);
+						rectangle.DrawShape(color.Amber);
+					}
+					else
+					{
+						rectangle.transform(glm::vec3(Scale_x, Scale_y, 0.0f), c.pos);
+						rectangle.DrawShape(color.Black);
+					}
+				}
+			}
 		}
 
 		// Print FPS
