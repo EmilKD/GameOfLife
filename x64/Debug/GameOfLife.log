@@ -1,10 +1,10 @@
-﻿  Grid.cpp
+﻿  Graphics.cpp
+  Grid.cpp
   Main.cpp
-D:\GameOfLife\Main.cpp(57,11): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\GameOfLife\Main.cpp(58,11): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\GameOfLife\Main.cpp(59,42): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\GameOfLife\Main.cpp(60,43): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\GameOfLife\Main.cpp(49,11): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\GameOfLife\Main.cpp(50,11): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\GameOfLife\Main.cpp(51,42): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\GameOfLife\Main.cpp(52,43): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   Generating Code...
-D:\GameOfLife\Grid.cpp(62): warning C4715: 'Grid::getCellByID': not all control paths return a value
 glfw3.lib(input.obj) : warning LNK4099: PDB '' was not found with 'glfw3.lib(input.obj)' or at ''; linking object as if no debug info
   GameOfLife.vcxproj -> D:\GameOfLife\x64\Debug\GameOfLife.exe

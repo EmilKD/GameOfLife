@@ -27,14 +27,6 @@ double runtime{ 0.0 };
 int timer{ 0 };
 
 
-struct Colors
-{
-	glm::vec3 Amber{glm::vec3(1.0f, 0.75f, 0.0f)};
-	glm::vec3 White{glm::vec3(1.0f, 1.0f, 1.0f)};
-	glm::vec3 Black{glm::vec3(0.0f, 0.0f, 0.0f)};
-};
-
-
 
 //=====================================================================================================================
 // CallBacks ----------------------------------------------------------------------------------------------------------
@@ -148,6 +140,7 @@ int main()
 	// Graphical Objects Declaration ----------------------------------------------------------------------------------
 	//=================================================================================================================
 	GraphicalObj rectangle(MainShader, "./Textures/GlowDotFilled.png");
+	rectangle.getShader().use();
 	Colors color;
 
 	bool start_flag{ true };
@@ -159,27 +152,30 @@ int main()
 	int rows = 60;
 	
 	Grid grid(cols, rows, windowSize[0],windowSize[1]);
-	cout << grid.getCells()[0].size();
-	cout << grid.getCells().size();
-	cout << endl;
 
 	// Visualizing the Grid
-	for(vector<cell> vc: grid.getCells())
+	/*for(vector<cell> vc: grid.getCells())
 	{
 		for (cell c : vc)
 		{
 			cout << c.state << " ";
 		}
 		cout << endl;
-	}
+	}*/
 
-	
-	cout << endl;
-	cout << grid.getCells()[0][0].pos[0] << " " << grid.getCells()[0][0].pos[1] << endl;
+	/*for (cell* c : grid.getNeighbors(179))
+	{
+		
+		if (c) {
+			cout << c->id << " yey" << endl;
+		}
+		else
+			cout << ":(";
+	}*/
 
-	float global_scale = 5.0f;
-	float Scale_x = float(1.0f / windowSize[0]) * global_scale;
-	float Scale_y = float(1.0f / windowSize[1]) * global_scale;
+	float global_scale = 10.0f;
+	float scale_x = float(1.0f / windowSize[0]) * global_scale;
+	float scale_y = float(1.0f / windowSize[1]) * global_scale;
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -191,46 +187,12 @@ int main()
 		glfwPollEvents();
 		glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
+		
+		// Game of Life
+		grid.checkNeighbors(&rectangle, scale_x, scale_y);
 
-		// Timing
-		runtime = glfwGetTime();
-		DeltaT = runtime - previousTime;
-
-		//if (DeltaT > 0.05)
-		{
-			previousTime = runtime;
-
-			// Render
-			rectangle.getShader().use();
-			for(vector<cell> vc: grid.getCells())
-			{
-				for (cell c : vc)
-				{
-					grid.checkNeighbors(&c);
-					grid.step += 1;
-
-					if (c.state)
-					{
-						rectangle.transform(glm::vec3(Scale_x, Scale_y, 0.0f), c.pos);
-						rectangle.DrawShape(color.Amber);
-					}
-					else
-					{
-						rectangle.transform(glm::vec3(Scale_x, Scale_y, 0.0f), c.pos);
-						rectangle.DrawShape(color.Black);
-					}
-				}
-			}
-		}
-
-		// Print FPS
-		//if (timer > 500)
-		//{
-		//	//system("CLS");
-		//	cout << "FPS: " << 1 / DeltaT << endl;
-		//	timer = 0;
-		//}
-		//++timer;
+		cout << "step: " << grid.step << endl;
+		grid.step += 1;
 	}
 
 	// Unbinding and closing all glfw windows and clearing opbjects

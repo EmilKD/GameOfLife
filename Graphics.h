@@ -11,6 +11,13 @@
 
 using std::vector;
 
+struct Colors
+{
+	glm::vec3 Amber{glm::vec3(1.0f, 0.75f, 0.0f)};
+	glm::vec3 White{glm::vec3(1.0f, 1.0f, 1.0f)};
+	glm::vec3 Black{glm::vec3(0.0f, 0.0f, 0.0f)};
+};
+
 class GraphicalObj {
 
 public:

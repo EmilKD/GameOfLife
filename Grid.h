@@ -5,6 +5,7 @@
 #include<glm/gtc/type_ptr.hpp>
 #include<vector>
 #include<array>
+#include "Graphics.h"
 
 using std::vector, std::array;
 
@@ -20,20 +21,17 @@ class Grid
 	
 public:
 	Grid(int cols, int rows, int window_res_x, int window_res_y);
-	void flipCell(cell *c);
-	void bornCell(cell *c);
-	void killCell(cell *c);
 	array<int, 2> getSize();
 	vector<vector<cell>> getCells();
-	void checkNeighbors(cell *c);
-	vector<cell> getNeighbors(int cellNum);
-	cell getCellByID(int id);
+	void checkNeighbors(GraphicalObj* gobj, float scale_x, float scale_y);
+	vector<cell*> getNeighbors(int cellNum);
+	cell* getCellByID(int id);
 
 	int step{ 0 };
 
 private:
 	const int gridSize[2]{10, 10};
 	vector<vector<cell>> cells;
-	
+	Colors color;
 };
 
