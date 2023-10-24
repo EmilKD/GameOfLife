@@ -1,10 +1,6 @@
-﻿  Graphics.cpp
-  Grid.cpp
-  Main.cpp
-D:\GameOfLife\Main.cpp(49,11): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\GameOfLife\Main.cpp(50,11): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\GameOfLife\Main.cpp(51,42): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\GameOfLife\Main.cpp(52,43): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-  Generating Code...
-glfw3.lib(input.obj) : warning LNK4099: PDB '' was not found with 'glfw3.lib(input.obj)' or at ''; linking object as if no debug info
+﻿  Main.cpp
+D:\GameOfLife\Main.cpp(45,11): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\GameOfLife\Main.cpp(46,11): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\GameOfLife\Main.cpp(47,42): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\GameOfLife\Main.cpp(48,43): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   GameOfLife.vcxproj -> D:\GameOfLife\x64\Debug\GameOfLife.exe

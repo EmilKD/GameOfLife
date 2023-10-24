@@ -24,7 +24,7 @@ public:
 	array<int, 2> getSize();
 	vector<vector<cell>> getCells();
 	void checkNeighbors(GraphicalObj* gobj, float scale_x, float scale_y);
-	vector<cell*> getNeighbors(int cellNum);
+	int getAliveNeighborsCount(int cellNum);
 	cell* getCellByID(int id);
 
 	int step{ 0 };
@@ -32,6 +32,7 @@ public:
 private:
 	const int gridSize[2]{10, 10};
 	vector<vector<cell>> cells;
+	vector<cell*> cellPtrs;
 	Colors color;
 };
 

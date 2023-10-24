@@ -34,8 +34,12 @@ Grid::Grid(int cols, int rows, int window_res_x, int window_res_y) : gridSize{co
 			else
 				this->cells[i][j].state = randomBool();
 			counter++;
+
+			cellPtrs.push_back(&cells[i][j]);
 		}
 	}
+
+
 
 	/*for (vector<cell> vc : cells) {
 		for (cell c : vc)
@@ -56,21 +60,12 @@ array<int, 2> Grid::getSize()
 
 cell* Grid::getCellByID(int id)
 {
-	for(vector<cell> &vc: this->cells)
-	{
-		for (cell &c : vc)
-		{
-			if (c.id == id)
-			{
-				return &c;
-			}
-		}
-	}
+	return cellPtrs[id];
 	std::cout << "cell with specified id not found";
 	return nullptr;
 }
 
-vector<cell*> Grid::getNeighbors(int cellNum)
+int Grid::getAliveNeighborsCount(int cellNum)
 {
 	//get all neighbors of cell c
 	vector<cell> neighbors;
@@ -155,77 +150,52 @@ vector<cell*> Grid::getNeighbors(int cellNum)
 		n8 -= grid_x * grid_y;
 	}
 
-	vector<cell*> vc;
 
-	vc.push_back(getCellByID(n1));
-	vc.push_back(getCellByID(n2));
-	vc.push_back(getCellByID(n3));
-	vc.push_back(getCellByID(n4));
-	vc.push_back(getCellByID(n5));
-	vc.push_back(getCellByID(n6));
-	vc.push_back(getCellByID(n7));
-	vc.push_back(getCellByID(n8));
-
-	return vc;
+	return int(cellPtrs[n1]->state) 
+		+ int(cellPtrs[n2]->state)
+		+ int(cellPtrs[n3]->state)
+		+ int(cellPtrs[n4]->state)
+		+ int(cellPtrs[n5]->state)
+		+ int(cellPtrs[n6]->state)
+		+ int(cellPtrs[n7]->state)
+		+ int(cellPtrs[n8]->state);
 }
 
 void Grid::checkNeighbors(GraphicalObj* gobj, float scale_x, float scale_y)
 {
-	for (int i{0}; i<gridSize[1]; ++i)
+	for (int i{0}; i<gridSize[1]* gridSize[0]; ++i)
 	{
-		for (int j{ 0 }; j < gridSize[0]; ++j)
-		{
-			cell* tempC = &cells[i][j];
+		cell* tempC = cellPtrs[i];
 	
-			vector<cell*> neighbors = getNeighbors(tempC->id);
-			int aliveNeighbors{ 0 };
+		int aliveNeighbors = getAliveNeighborsCount(tempC->id);
 
-			// if alive -> lives if 2 or 3 neighbors are alive -> alive
-			// if 3 neighbors alive then -> born
-			for (cell *neighbor : neighbors) 
-			{
-				if (neighbor) 
-				{
-					if (neighbor->state)
-						aliveNeighbors++;
-				}
-			}
+		// if alive -> lives if 2 or 3 neighbors are alive -> alive
+		// if 3 neighbors alive then -> born
 	
-			if (tempC->state)
-			{
-				if (aliveNeighbors == 2 || aliveNeighbors == 3)
-				{
-				}
-				else if(aliveNeighbors < 2)
-				{
-					tempC->state = 0;
-				}
-				else if(aliveNeighbors > 3)
-				{
-					tempC->state = 0;
-				}
-			}
-			else if (aliveNeighbors == 3) 
-			{
-				tempC->state = 1;
-			}
-			
-			// Rendering
-			gobj->transform(glm::vec3(scale_x, scale_y, 0.0f), tempC->pos);
-			if (tempC->state)
-				gobj->DrawShape(color.Amber);
-			else
-				gobj->DrawShape(color.Black);
-		}
-	}
-	/*for(vector<cell> vc: cells)
-	{
-		for (cell c : vc)
+		if (tempC->state)
 		{
-			std::cout << c.state << " ";
+			if(aliveNeighbors < 2)
+			{
+				tempC->state = 0;
+			}
+			else if(aliveNeighbors > 3)
+			{
+				tempC->state = 0;
+			}
 		}
-		std::cout << std::endl;
-	}*/
+		else if (aliveNeighbors == 3) 
+		{
+			tempC->state = 1;
+		}
+			
+		// Rendering
+		gobj->transform(glm::vec3(scale_x, scale_y, 0.0f), tempC->pos);
+		if (tempC->state)
+			gobj->DrawShape(color.Amber);
+		else
+			gobj->DrawShape(color.Black);
+		
+	}
 }
 
 

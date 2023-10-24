@@ -13,19 +13,15 @@ using std::cout, std::endl, std::vector, std::array;
 bool left_mouse_button;
 bool right_mouse_button;
 
-array<int, 2> windowSize{1000, 600};
+array<int, 2> windowSize{1920, 1080};
 float g_xpos, g_ypos;
 float wc_x;
 float wc_y;
 
-float Scale_x;
-float Scale_y;
+float scale_x;
+float scale_y;
 
-double previousTime{ 0.0 };
-double DeltaT{ 0.0 };
-double runtime{ 0.0 };
-int timer{ 0 };
-
+bool paused{ false };
 
 
 //=====================================================================================================================
@@ -48,20 +44,15 @@ void cursor_pos_callBack(GLFWwindow* window, double xpos, double ypos)
 {
 	g_xpos = xpos;
 	g_ypos = ypos;
-	wc_x = (2 * (xpos / windowSize[0]) - 1) / Scale_x;
-	wc_y = (-2 * (ypos / windowSize[1]) + 1) / Scale_y;
+	wc_x = (2 * (xpos / windowSize[0]) - 1) / scale_x;
+	wc_y = (-2 * (ypos / windowSize[1]) + 1) / scale_y;
 }
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
 	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
 	{
-
-	}
-
-	if (key == GLFW_KEY_D && action == GLFW_PRESS)
-	{
-
+		paused = !paused;
 	}
 }
 
@@ -148,8 +139,8 @@ int main()
 	//=================================================================================================================
 	// Program Loop ---------------------------------------------------------------------------------------------------
 	//=================================================================================================================
-	int cols = 100;
-	int rows = 60;
+	int cols = 200;
+	int rows = 112;
 	
 	Grid grid(cols, rows, windowSize[0],windowSize[1]);
 
@@ -173,7 +164,7 @@ int main()
 			cout << ":(";
 	}*/
 
-	float global_scale = 10.0f;
+	float global_scale = 5.0f;
 	float scale_x = float(1.0f / windowSize[0]) * global_scale;
 	float scale_y = float(1.0f / windowSize[1]) * global_scale;
 
@@ -181,18 +172,21 @@ int main()
 	{
 		// input
 		process_input(window);
-
-		// rendering commands
-		glfwSwapBuffers(window);
 		glfwPollEvents();
-		glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
+		if (!paused)
+		{
+			// rendering commands
+			glfwSwapBuffers(window);
+			glfwPollEvents();
+			glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
+			glClear(GL_COLOR_BUFFER_BIT);
 		
-		// Game of Life
-		grid.checkNeighbors(&rectangle, scale_x, scale_y);
+			// Game of Life
+			grid.checkNeighbors(&rectangle, scale_x, scale_y);
 
-		cout << "step: " << grid.step << endl;
-		grid.step += 1;
+			cout << "step: " << grid.step << endl;
+			grid.step += 1;
+		}
 	}
 
 	// Unbinding and closing all glfw windows and clearing opbjects
