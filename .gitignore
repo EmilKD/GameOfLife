@@ -400,3 +400,5 @@ FodyWeavers.xsd
 /Libraries
 /x64
 /Debug
+glad.c
+stb_image.h
