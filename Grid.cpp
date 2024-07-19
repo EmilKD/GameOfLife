@@ -163,11 +163,14 @@ int Grid::getAliveNeighborsCount(int cellNum)
 
 void Grid::checkNeighbors(GraphicalObj* gobj, float scale_x, float scale_y)
 {
+	cell* tempC{NULL};
+	int aliveNeighbors{ 0 };
+
 	for (int i{0}; i<gridSize[1]* gridSize[0]; ++i)
 	{
-		cell* tempC = cellPtrs[i];
+		tempC = cellPtrs[i];
 	
-		int aliveNeighbors = getAliveNeighborsCount(tempC->id);
+		aliveNeighbors = getAliveNeighborsCount(tempC->id);
 
 		// if alive -> lives if 2 or 3 neighbors are alive -> alive
 		// if 3 neighbors alive then -> born
